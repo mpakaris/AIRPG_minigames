@@ -24,6 +24,14 @@ export const games: Game[] = [
     correctCode: '135246',
     finalPin: '2008',
   },
+  {
+    slug: 'the-fingerprint',
+    name: 'The Fingerprint',
+    description: 'The scattered pieces of a fingerprint lie before you. Assemble them to reveal the identity of a person of interest.',
+    puzzleDescription: 'A jigsaw-style puzzle where the user must assemble a fingerprint from scattered pieces.',
+    correctCode: 'TONY SOMBRERO',
+    finalPin: '3121',
+  },
 ];
 
 export const getGameData = (slug: string): Game | undefined => {
