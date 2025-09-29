@@ -1,3 +1,10 @@
 {
-  "placeholderImages": []
+  "placeholderImages": [
+    {
+      "id": "hero-image",
+      "description": "A mysterious-looking keyhole on an old wooden door.",
+      "imageUrl": "https://images.unsplash.com/photo-1661283510089-d5c235ff78d0?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHxteXN0ZXJpb3VzJTIwa2V5aG9sZXxlbnwwfHx8fDE3NTkxNjM3NTd8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "mysterious keyhole"
+    }
+  ]
 }
