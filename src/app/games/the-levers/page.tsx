@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useEffect, useMemo, useTransition } from 'react';
-import type { Params } from 'next/dist/shared/lib/router/utils/route-matcher';
 import Link from 'next/link';
 import { ArrowLeft } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -16,10 +15,10 @@ import { useToast } from '@/hooks/use-toast';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Terminal } from 'lucide-react';
 
-export default function GamePage({ params }: { params: Params }) {
+export default function GamePage() {
   const [isPending, startTransition] = useTransition();
   const { toast } = useToast();
-  const gameData = useMemo(() => getGameData(params.slug), [params.slug]);
+  const gameData = useMemo(() => getGameData('the-levers'), []);
 
   const [leverSequence, setLeverSequence] = useState<number[]>([]);
   const [isSolved, setIsSolved] = useState(false);
