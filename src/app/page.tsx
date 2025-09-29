@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { ClueCodedLogo } from '@/components/icons/logo';
 import { ArrowRight } from 'lucide-react';
+import { games } from '@/lib/games';
 
 export default function Home() {
   const heroImage = PlaceHolderImages.find(img => img.id === 'hero-image');
@@ -40,12 +41,14 @@ export default function Home() {
                   </p>
                 </div>
                 <div className="flex flex-col gap-2 min-[400px]:flex-row">
-                  <Button asChild size="lg" className="shadow-lg shadow-primary/20">
-                    <Link href="/games/the-safe">
-                      Start Your First Challenge
-                      <ArrowRight className="ml-2 h-5 w-5" />
-                    </Link>
-                  </Button>
+                  {games.map((game) => (
+                    <Button asChild size="lg" className="shadow-lg shadow-primary/20" key={game.slug}>
+                      <Link href={`/games/${game.slug}`}>
+                        {game.name}
+                        <ArrowRight className="ml-2 h-5 w-5" />
+                      </Link>
+                    </Button>
+                  ))}
                 </div>
               </div>
             </div>
