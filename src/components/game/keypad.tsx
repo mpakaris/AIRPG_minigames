@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { Backspace } from "lucide-react";
+import { Delete } from "lucide-react";
 
 type KeypadProps = {
   onKeyPress: (key: string) => void;
@@ -37,7 +37,7 @@ export default function Keypad({ onKeyPress, onDelete }: KeypadProps) {
         className="aspect-square h-auto w-full flex items-center justify-center bg-background/50 hover:bg-accent/20 border-accent/30 text-foreground shadow-sm rounded-2xl"
         aria-label="Delete last digit"
       >
-        <Backspace className="w-8 h-8 text-accent" />
+        <Delete className="w-8 h-8 text-accent" />
       </Button>
     </div>
   );
