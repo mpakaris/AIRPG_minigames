@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useMemo, useTransition } from 'react';
+import { useState, useMemo, useTransition, useEffect } from 'react';
 import Link from 'next/link';
 import { ArrowLeft } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -16,7 +16,8 @@ import FingerprintPuzzle from '@/components/game/fingerprint-puzzle';
 export default function GamePage() {
   const [isPending, startTransition] = useTransition();
   const { toast } = useToast();
-  const gameData = useMemo(() => getGameData('the-fingerprint'), []);
+  // By not using useMemo, we ensure gameData is available on initial render consistently.
+  const gameData = getGameData('the-fingerprint');
 
   const [isSolved, setIsSolved] = useState(false);
   const [aiClue, setAiClue] = useState<string | null>(null);

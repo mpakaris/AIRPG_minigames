@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
-import { motion, PanInfo, useAnimation } from 'framer-motion';
+import { motion, PanInfo, useAnimation, useIsPresent } from 'framer-motion';
 import { z } from 'zod';
 import { cn } from '@/lib/utils';
 import { FingerprintPiece1, FingerprintPiece2, FingerprintPiece3, FingerprintPiece4, FingerprintPiece5, FingerprintPiece6 } from './fingerprint-pieces';
@@ -28,6 +28,15 @@ const piecesData: Omit<Piece, 'isSolved'>[] = [
   { id: 6, Component: FingerprintPiece6, solvedX: 100, solvedY: 200 },
 ];
 
+function getRandomPosition(containerWidth: number, containerHeight: number) {
+    const pieceSize = 100;
+    // Get random positions within the container, leaving some padding
+    const x = Math.random() * (containerWidth - pieceSize * 2) + pieceSize;
+    const y = Math.random() * (containerHeight - pieceSize);
+    return { x, y };
+}
+
+
 export default function FingerprintPuzzle({ onSolve }: { onSolve: () => void }) {
   const [pieces, setPieces] = useState<Piece[]>(
     piecesData.map(p => ({ ...p, isSolved: p.id === 1 }))
@@ -41,19 +50,22 @@ export default function FingerprintPuzzle({ onSolve }: { onSolve: () => void }) 
       const { width, height } = constraintsRef.current.getBoundingClientRect();
       const newPositions = piecesData.map((piece) => {
         if (piece.id === 1) {
+           // The first piece is already solved
            return { x: piece.solvedX, y: piece.solvedY };
         }
-        return {
-          x: Math.random() * (width - 100),
-          y: Math.random() * (height - 100),
-        };
+        return getRandomPosition(width, height);
       });
       setInitialPositions(newPositions);
-      newPositions.forEach((pos, i) => {
-        controls[i].start({ x: pos.x, y: pos.y, transition: { type: 'spring' } });
-      });
     }
-  }, [constraintsRef.current, pieces, controls, initialPositions.length]);
+  }, []);
+
+  useEffect(() => {
+    if(initialPositions.length > 0) {
+        initialPositions.forEach((pos, i) => {
+            controls[i].set({ x: pos.x, y: pos.y });
+        });
+    }
+  }, [initialPositions, controls]);
 
 
   const handleDragEnd = (
@@ -65,29 +77,31 @@ export default function FingerprintPuzzle({ onSolve }: { onSolve: () => void }) 
     if (!piece || piece.isSolved) return;
 
     MotionEventValidator.parse(info.point);
-
-    const distance = Math.sqrt(
-      Math.pow(info.point.x - piece.solvedX, 2) + Math.pow(info.point.y - piece.solvedY, 2)
-    );
-
+    
     const dropZone = document.getElementById(`drop-zone-${pieceId}`);
-    if(!dropZone) return;
+    if(!dropZone || !constraintsRef.current) return;
     
     const dropZoneRect = dropZone.getBoundingClientRect();
+    const containerRect = constraintsRef.current.getBoundingClientRect();
 
+    // Check if the center of the piece is within the drop zone
     if (
-        info.point.x > dropZoneRect.left &&
-        info.point.x < dropZoneRect.right &&
-        info.point.y > dropZoneRect.top &&
-        info.point.y < dropZoneRect.bottom
+        info.point.x >= dropZoneRect.left &&
+        info.point.x <= dropZoneRect.right &&
+        info.point.y >= dropZoneRect.top &&
+        info.point.y <= dropZoneRect.bottom
     ) {
       const updatedPieces = pieces.map(p =>
         p.id === pieceId ? { ...p, isSolved: true } : p
       );
       setPieces(updatedPieces);
+      
+      const targetX = dropZoneRect.left - containerRect.left;
+      const targetY = dropZoneRect.top - containerRect.top;
+
       controls[pieceId - 1].start({
-        x: piece.solvedX,
-        y: piece.solvedY,
+        x: targetX,
+        y: targetY,
         transition: { type: 'spring', stiffness: 300, damping: 30 },
       });
 
@@ -112,14 +126,14 @@ export default function FingerprintPuzzle({ onSolve }: { onSolve: () => void }) 
     <div className="w-full h-full flex flex-col items-center justify-center">
       <div ref={constraintsRef} className="relative w-[300px] h-[400px] sm:w-[500px] sm:h-[500px]">
         {/* Drop Zones */}
-        <div className="absolute top-0 left-0 w-[200px] h-[300px] grid grid-cols-2 grid-rows-3">
-          {pieces.map(piece => (
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[200px] h-[300px] grid grid-cols-2 grid-rows-3">
+          {piecesData.map(piece => (
             <div
               key={`dropzone-${piece.id}`}
               id={`drop-zone-${piece.id}`}
               className={cn(
                 "w-[100px] h-[100px] border-dashed border-2 rounded-lg",
-                piece.isSolved ? "border-accent/50" : "border-foreground/20",
+                pieces.find(p => p.id === piece.id)?.isSolved ? "border-accent/50" : "border-foreground/20",
                 allSolved && "border-transparent"
               )}
             />
@@ -144,7 +158,7 @@ export default function FingerprintPuzzle({ onSolve }: { onSolve: () => void }) 
               zIndex: piece.isSolved ? 1 : 10,
             }}
           >
-            <piece.Component className={cn("w-[100px] h-[100px]", allSolved && "text-primary transition-colors duration-1000")} />
+            <piece.Component className={cn("w-[100px] h-[100px] text-foreground", allSolved && "text-primary transition-colors duration-1000")} />
           </motion.div>
         ))}
       </div>
