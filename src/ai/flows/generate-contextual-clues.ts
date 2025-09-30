@@ -41,7 +41,7 @@ const prompt = ai.definePrompt({
   {{puzzleDescription}}
 
   Generate a single, concise, helpful clue that will nudge the player in the right direction without giving away the solution. The clue should be appropriate for the player's current progress and the nature of the puzzle.
-  The clue should not be longer than 50 words.
+  The clue should not be longer than 50 words. If the puzzle is already solved, you can reveal a piece of the story.
   `,
 });
 
@@ -52,6 +52,12 @@ const generateContextualClueFlow = ai.defineFlow(
     outputSchema: GenerateContextualClueOutputSchema,
   },
   async input => {
+    // For the notebook game, we have a specific response.
+    if (input.puzzleDescription.includes('notebook')) {
+        return {
+            clue: 'You unlocked the Notebook. To read its content type "Burt the Nerd" in the game.'
+        }
+    }
     const {output} = await prompt(input);
     return output!;
   }
