@@ -13,10 +13,10 @@ export function NotebookIcon(props: SVGProps<SVGSVGElement>) {
       strokeLinejoin="round"
     >
       {/* Main notebook body */}
-      <rect x="15" y="10" width="70" height="80" rx="5" fill="hsl(var(--primary))" stroke="none" />
+      <rect x="15" y="10" width="70" height="80" rx="5" fill="#8B4513" stroke="none" />
       
       {/* Spine */}
-      <path d="M 15 10 L 15 90" stroke="hsl(var(--primary) / 0.7)" strokeWidth="4" />
+      <path d="M 15 10 L 15 90" stroke="#65320d" strokeWidth="4" />
       
       {/* Subtle Texture */}
       <path d="M 20 20 C 30 15, 40 25, 50 20" stroke="hsl(var(--primary-foreground) / 0.1)" strokeWidth="1" fill="none" />
@@ -25,11 +25,11 @@ export function NotebookIcon(props: SVGProps<SVGSVGElement>) {
       <path d="M 20 50 C 50 40, 60 60, 80 50" stroke="hsl(var(--primary-foreground) / 0.1)" strokeWidth="1" fill="none" />
 
       {/* Strap */}
-      <rect x="5" y="45" width="90" height="10" fill="hsl(var(--accent))" stroke="none" />
-      <rect x="5" y="45" width="90" height="10" stroke="hsl(var(--accent-foreground) / 0.5)" strokeWidth="1.5" />
+      <rect x="5" y="45" width="90" height="10" fill="#A0522D" stroke="none" />
+      <rect x="5" y="45" width="90" height="10" stroke="#5C2F18" strokeWidth="1.5" />
 
       {/* Button on strap */}
-      <circle cx="80" cy="50" r="3" fill="hsl(var(--accent-foreground) / 0.8)" stroke="hsl(var(--accent-foreground))" strokeWidth="1" />
+      <circle cx="80" cy="50" r="3" fill="#5C2F18" stroke="#4a2511" strokeWidth="1" />
     </svg>
   );
 }
