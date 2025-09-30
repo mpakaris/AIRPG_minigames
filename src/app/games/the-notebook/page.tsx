@@ -132,7 +132,7 @@ export default function GamePage() {
         ) : (
           <ClueReveal
             isLoading={isLoadingClue || isPending}
-            clue={'You unlocked the Notebook. To read its content type "Burt the Nerd" in the game.'}
+            clue={aiClue}
             pin={gameData.finalPin}
           />
         )}
