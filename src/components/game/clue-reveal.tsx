@@ -1,16 +1,18 @@
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
 import { CheckCircle2 } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
 type ClueRevealProps = {
   isLoading: boolean;
   clue: string | null;
-  pin: string;
+  pin?: string;
+  specialPhrase?: string | null;
 };
 
-export default function ClueReveal({ isLoading, clue, pin }: ClueRevealProps) {
+export default function ClueReveal({ isLoading, clue, pin, specialPhrase }: ClueRevealProps) {
   return (
     <Card className="w-full text-center animate-in fade-in duration-500">
       <CardHeader>
@@ -29,20 +31,33 @@ export default function ClueReveal({ isLoading, clue, pin }: ClueRevealProps) {
                 <Skeleton className="h-4 w-[80%] rounded-full" />
               </div>
             ) : (
-              <p className="text-foreground italic">"{clue}"</p>
+              <p className="text-foreground italic text-center">"{clue}"</p>
             )}
           </div>
         </div>
-        <div>
-          <h3 className="text-sm font-semibold uppercase text-muted-foreground tracking-wider">Your PIN Code</h3>
-          <div className="mt-2 flex items-center justify-center space-x-2">
-            {pin.split('').map((digit, index) => (
-              <div key={index} className="flex h-16 w-12 items-center justify-center rounded-md bg-primary text-primary-foreground text-4xl font-bold shadow-md">
-                {digit}
-              </div>
-            ))}
+        
+        {specialPhrase ? (
+          <div>
+            <h3 className="text-sm font-semibold uppercase text-muted-foreground tracking-wider">Unlocked Phrase</h3>
+            <div className="mt-2 p-4 bg-primary text-primary-foreground rounded-lg">
+              <p className="text-lg md:text-xl font-headline font-bold text-center tracking-wider">
+                {specialPhrase}
+              </p>
+            </div>
           </div>
-        </div>
+        ) : pin && (
+          <div>
+            <h3 className="text-sm font-semibold uppercase text-muted-foreground tracking-wider">Your PIN Code</h3>
+            <div className="mt-2 flex items-center justify-center space-x-2">
+              {pin.split('').map((digit, index) => (
+                <div key={index} className="flex h-16 w-12 items-center justify-center rounded-md bg-primary text-primary-foreground text-4xl font-bold shadow-md">
+                  {digit}
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
       </CardContent>
       <CardFooter>
         <Button asChild className="w-full">

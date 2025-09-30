@@ -25,41 +25,48 @@ export default function GamePage() {
   const [isIncorrect, setIsIncorrect] = useState(false);
   const [aiClue, setAiClue] = useState<string | null>(null);
   const [isLoadingClue, setIsLoadingClue] = useState(false);
+  const [specialPhrase, setSpecialPhrase] = useState<string | null>(null);
 
   useEffect(() => {
     if (!gameData || isSolved) return;
 
-    if (inputCode.length === gameData.correctCode.length) {
-      if (inputCode.toUpperCase() === gameData.correctCode) {
-        setIsSolved(true);
-        setIsIncorrect(false);
-        setIsLoadingClue(true);
-        startTransition(async () => {
-          try {
-            const result = await generateContextualClue({
-              gameState: `Player has successfully entered the password: ${gameData.correctCode}.`,
-              puzzleDescription: gameData.puzzleDescription,
-            });
-            setAiClue(result.clue);
-          } catch (error) {
-            console.error('AI clue generation failed:', error);
-            setAiClue('The machine whirs, but stays silent. You have the PIN, though.');
-            toast({
-              title: 'AI Error',
-              description: 'Failed to generate contextual clue.',
-              variant: 'destructive',
-            });
-          } finally {
-            setIsLoadingClue(false);
+    if (inputCode.toUpperCase() === gameData.correctCode) {
+      setIsSolved(true);
+      setIsIncorrect(false);
+      setIsLoadingClue(true);
+      startTransition(async () => {
+        try {
+          const result = await generateContextualClue({
+            gameState: `Player has successfully entered the password: ${gameData.correctCode}.`,
+            puzzleDescription: gameData.puzzleDescription,
+          });
+          
+          const phraseRegex = /'([^']*)'/;
+          const match = result.clue.match(phraseRegex);
+          if (match && match[1]) {
+            setSpecialPhrase(match[1]);
           }
-        });
-      } else {
-        setIsIncorrect(true);
-        setTimeout(() => {
-          setIsIncorrect(false);
-          setInputCode('');
-        }, 1500);
-      }
+
+          setAiClue(result.clue.replace(/\n\n.*$/, ''));
+
+        } catch (error) {
+          console.error('AI clue generation failed:', error);
+          setAiClue('The machine whirs, but stays silent.');
+          toast({
+            title: 'AI Error',
+            description: 'Failed to generate contextual clue.',
+            variant: 'destructive',
+          });
+        } finally {
+          setIsLoadingClue(false);
+        }
+      });
+    } else if (inputCode.length === gameData.correctCode.length) {
+      setIsIncorrect(true);
+      setTimeout(() => {
+        setIsIncorrect(false);
+        setInputCode('');
+      }, 1500);
     }
   }, [inputCode, gameData, toast, isSolved]);
 
@@ -102,7 +109,7 @@ export default function GamePage() {
             <NotebookIcon className="w-48 h-48 text-primary/80" />
             <div className="mt-8">
               <PasswordInput
-                codeLength={4}
+                codeLength={gameData.correctCode.length}
                 onCodeChange={handleCodeChange}
                 onCodeComplete={handleCodeComplete}
                 isIncorrect={isIncorrect}
@@ -134,6 +141,7 @@ export default function GamePage() {
             isLoading={isLoadingClue || isPending}
             clue={aiClue}
             pin={gameData.finalPin}
+            specialPhrase={specialPhrase}
           />
         )}
       </div>
