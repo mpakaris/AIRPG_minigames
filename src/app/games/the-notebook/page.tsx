@@ -4,6 +4,7 @@ import { useState, useEffect, useMemo, useTransition } from 'react';
 import Link from 'next/link';
 import { ArrowLeft, Terminal } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import Image from 'next/image';
 
 import { getGameData } from '@/lib/games';
 import { GameLayout } from '@/components/game/game-layout';
@@ -11,14 +12,15 @@ import ClueReveal from '@/components/game/clue-reveal';
 import { generateContextualClue } from '@/ai/flows/generate-contextual-clues';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
-import { NotebookIcon } from '@/components/icons/notebook';
 import PasswordInput from '@/components/game/password-input';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { PlaceHolderImages } from '@/lib/placeholder-images';
 
 export default function GamePage() {
   const [isPending, startTransition] = useTransition();
   const { toast } = useToast();
   const gameData = useMemo(() => getGameData('the-notebook'), []);
+  const notebookImage = PlaceHolderImages.find(img => img.id === 'notebook-image');
 
   const [inputCode, setInputCode] = useState('');
   const [isSolved, setIsSolved] = useState(false);
@@ -105,9 +107,20 @@ export default function GamePage() {
         {!isSolved ? (
           <>
             <h1 className="font-headline text-3xl font-bold text-primary">{gameData.name}</h1>
-            <p className="text-foreground/80 mt-2 mb-8">{gameData.description}</p>
-            <NotebookIcon className="w-48 h-48 text-primary/80" />
-            <div className="mt-8">
+            <p className="text-foreground/80 mt-2 mb-4">{gameData.description}</p>
+            
+            {notebookImage && (
+              <Image
+                src={notebookImage.imageUrl}
+                alt={notebookImage.description}
+                data-ai-hint={notebookImage.imageHint}
+                width={600}
+                height={400}
+                className="rounded-lg shadow-lg mb-6"
+              />
+            )}
+
+            <div className="mt-4">
               <PasswordInput
                 codeLength={gameData.correctCode.length}
                 onCodeChange={handleCodeChange}

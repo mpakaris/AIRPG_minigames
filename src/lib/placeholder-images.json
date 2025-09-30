@@ -5,6 +5,12 @@
       "description": "A mysterious-looking keyhole on an old wooden door.",
       "imageUrl": "https://images.unsplash.com/photo-1661283510089-d5c235ff78d0?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHxteXN0ZXJpb3VzJTIwa2V5aG9sZXxlbnwwfHx8fDE3NTkxNjM3NTd8MA&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "mysterious keyhole"
+    },
+    {
+      "id": "notebook-image",
+      "description": "A photorealistic, cinematic image of an open brown leather-bound notebook resting on a dark wooden table. The pages are filled with handwritten notes, sketches, and pasted photos, creating a mysterious, detective-like feel. The setting is a dimly lit, atmospheric cafe with a blurred background, drawing focus to the notebook.",
+      "imageUrl": "https://storage.googleapis.com/aifirebase-76398.appspot.com/images%2Fmmyowrak%2Fgenerated_1727633785161.jpeg?GoogleAccessId=firebase-adminsdk-gb7d1%40aifirebase-76398.iam.gserviceaccount.com&Expires=1727637388&Signature=D46D1W54%2F3jWd60V9qJ%2BO14g2xG0c7dOa6mIu2s7mJ2L4t9p2q69Wn1xM9zWzHqV0d8p9c5r8n8e7g5o8i8h8k8l8j8h8g8f8e8d8c8b8a8%40%40",
+      "imageHint": "detective notebook"
     }
   ]
 }
