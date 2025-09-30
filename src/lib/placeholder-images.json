@@ -3,13 +3,13 @@
     {
       "id": "hero-image",
       "description": "A mysterious-looking keyhole on an old wooden door.",
-      "imageUrl": "https://storage.googleapis.com/aifirebase-76398.appspot.com/images%2Fcluecoded%2Fhero-image.jpeg?GoogleAccessId=firebase-adminsdk-gb7d1%40aifirebase-76398.iam.gserviceaccount.com&Expires=1758580004&Signature=oQ53fP8lFwH%2FWiX4p8NlWcK8Z2o8Y2q6e9d7d3d2c1b0a9%40%40",
+      "imageUrl": "https://storage.googleapis.com/aifirebase-76398.appspot.com/images/cluecoded/hero-image.jpeg",
       "imageHint": "mysterious keyhole"
     },
     {
       "id": "notebook-image",
       "description": "A photorealistic, cinematic image of an open brown leather-bound notebook resting on a dark wooden table. The pages are filled with handwritten notes, sketches, and pasted photos, creating a mysterious, detective-like feel. The setting is a dimly lit, atmospheric cafe with a blurred background, drawing focus to the notebook.",
-      "imageUrl": "https://storage.googleapis.com/aifirebase-76398.appspot.com/images%2Fcluecoded%2Fnotebook-image.jpeg?GoogleAccessId=firebase-adminsdk-gb7d1%40aifirebase-76398.iam.gserviceaccount.com&Expires=1758580064&Signature=rX9y3w9v6u5r4t3w2e1q0%2B%2F%2F%0A",
+      "imageUrl": "https://storage.googleapis.com/aifirebase-76398.appspot.com/images/cluecoded/notebook-image.jpeg",
       "imageHint": "detective notebook"
     }
   ]
