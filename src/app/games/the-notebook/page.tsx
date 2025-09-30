@@ -4,7 +4,6 @@ import { useState, useEffect, useMemo, useTransition } from 'react';
 import Link from 'next/link';
 import { ArrowLeft, Terminal } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import Image from 'next/image';
 
 import { getGameData } from '@/lib/games';
 import { GameLayout } from '@/components/game/game-layout';
@@ -14,13 +13,12 @@ import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
 import PasswordInput from '@/components/game/password-input';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { PlaceHolderImages } from '@/lib/placeholder-images';
+import { NotebookIcon } from '@/components/icons/notebook';
 
 export default function GamePage() {
   const [isPending, startTransition] = useTransition();
   const { toast } = useToast();
   const gameData = useMemo(() => getGameData('the-notebook'), []);
-  const notebookImage = PlaceHolderImages.find(img => img.id === 'notebook-image');
 
   const [inputCode, setInputCode] = useState('');
   const [isSolved, setIsSolved] = useState(false);
@@ -109,16 +107,7 @@ export default function GamePage() {
             <h1 className="font-headline text-3xl font-bold text-primary">{gameData.name}</h1>
             <p className="text-foreground/80 mt-2 mb-4">{gameData.description}</p>
             
-            {notebookImage && (
-              <Image
-                src={notebookImage.imageUrl}
-                alt={notebookImage.description}
-                data-ai-hint={notebookImage.imageHint}
-                width={600}
-                height={400}
-                className="rounded-lg shadow-lg mb-6"
-              />
-            )}
+            <NotebookIcon className="w-48 h-48 mb-6 text-primary" />
 
             <div className="mt-4">
               <PasswordInput
