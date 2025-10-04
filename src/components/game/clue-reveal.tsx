@@ -1,9 +1,10 @@
+import { useState } from 'react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
-import { CheckCircle2 } from 'lucide-react';
-import { cn } from '@/lib/utils';
+import { CheckCircle2, Clipboard, ClipboardCheck } from 'lucide-react';
+import { useToast } from '@/hooks/use-toast';
 
 type ClueRevealProps = {
   isLoading: boolean;
@@ -13,6 +14,21 @@ type ClueRevealProps = {
 };
 
 export default function ClueReveal({ isLoading, clue, pin, specialPhrase }: ClueRevealProps) {
+  const { toast } = useToast();
+  const [isCopied, setIsCopied] = useState(false);
+
+  const handleCopy = () => {
+    if (specialPhrase) {
+      navigator.clipboard.writeText(specialPhrase);
+      setIsCopied(true);
+      toast({
+        title: 'Copied to clipboard!',
+        description: 'You can now paste the phrase into the game chat.',
+      });
+      setTimeout(() => setIsCopied(false), 2000);
+    }
+  };
+  
   return (
     <Card className="w-full text-center animate-in fade-in duration-500">
       <CardHeader>
@@ -39,10 +55,19 @@ export default function ClueReveal({ isLoading, clue, pin, specialPhrase }: Clue
         {specialPhrase ? (
           <div>
             <h3 className="text-sm font-semibold uppercase text-muted-foreground tracking-wider">Unlocked Phrase</h3>
-            <div className="mt-2 p-4 bg-primary text-primary-foreground rounded-lg">
-              <p className="text-lg md:text-xl font-headline font-bold text-center tracking-wider">
+            <div className="mt-2 p-4 bg-primary text-primary-foreground rounded-lg relative">
+              <p className="text-lg md:text-xl font-headline font-bold text-center tracking-wider break-words pr-12">
                 {specialPhrase}
               </p>
+              <Button
+                size="icon"
+                variant="ghost"
+                onClick={handleCopy}
+                className="absolute right-2 top-1/2 -translate-y-1/2 h-8 w-8 text-primary-foreground hover:bg-primary/80 hover:text-primary-foreground"
+                aria-label="Copy phrase to clipboard"
+              >
+                {isCopied ? <ClipboardCheck className="h-5 w-5" /> : <Clipboard className="h-5 w-5" />}
+              </Button>
             </div>
           </div>
         ) : pin && (

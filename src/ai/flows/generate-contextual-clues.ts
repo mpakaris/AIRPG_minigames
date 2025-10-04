@@ -55,7 +55,7 @@ const generateContextualClueFlow = ai.defineFlow(
     // For the notebook game, we have a specific response.
     if (input.puzzleDescription.includes('notebook')) {
         return {
-            clue: "You solved the clue succesfully. \n\nTo read its content type 'Justice for Silas Bloom' into the game chat to unlock the contents of the Notebook."
+            clue: "You entered the correct Password. To open the Book, copy the sentence below and paste it into the Game-Chat"
         }
     }
     const {output} = await prompt(input);

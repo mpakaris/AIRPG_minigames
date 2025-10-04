@@ -25,7 +25,8 @@ export default function GamePage() {
   const [isIncorrect, setIsIncorrect] = useState(false);
   const [aiClue, setAiClue] = useState<string | null>(null);
   const [isLoadingClue, setIsLoadingClue] = useState(false);
-  const [specialPhrase, setSpecialPhrase] = useState<string | null>(null);
+  
+  const specialPhrase = 'Password for brown notebook "Justice for Silas Bloom"';
 
   useEffect(() => {
     if (!gameData || isSolved) return;
@@ -41,13 +42,7 @@ export default function GamePage() {
             puzzleDescription: gameData.puzzleDescription,
           });
           
-          const phraseRegex = /'([^']*)'/;
-          const match = result.clue.match(phraseRegex);
-          if (match && match[1]) {
-            setSpecialPhrase(match[1]);
-          }
-
-          setAiClue(result.clue.replace(/\n\n.*$/, ''));
+          setAiClue(result.clue);
 
         } catch (error) {
           console.error('AI clue generation failed:', error);
@@ -142,7 +137,6 @@ export default function GamePage() {
           <ClueReveal
             isLoading={isLoadingClue || isPending}
             clue={aiClue}
-            pin={gameData.finalPin}
             specialPhrase={specialPhrase}
           />
         )}

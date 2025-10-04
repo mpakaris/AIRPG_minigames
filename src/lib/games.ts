@@ -4,7 +4,7 @@ export type Game = {
   description: string;
   puzzleDescription: string;
   correctCode: string;
-  finalPin: string;
+  finalPin?: string;
 };
 
 export const games: Game[] = [
@@ -37,8 +37,7 @@ export const games: Game[] = [
     name: 'The Notebook',
     description: 'A leather-bound notebook holds the next clue, but it is locked by a 4-character password.',
     puzzleDescription: 'A digital notebook locked by a 4-character password. The player must enter the code to unlock it.',
-    correctCode: 'SAXO',
-    finalPin: '1984',
+    correctCode: 'ROSE',
   },
 ];
 
