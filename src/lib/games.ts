@@ -3,7 +3,7 @@ export type Game = {
   name: string;
   description: string;
   puzzleDescription: string;
-  correctCode: string;
+  correctCode?: string;
   finalPin?: string;
 };
 
@@ -38,6 +38,12 @@ export const games: Game[] = [
     description: 'A leather-bound notebook holds the next clue, but it is locked by a 4-character password.',
     puzzleDescription: 'A digital notebook locked by a 4-character password. The player must enter the code to unlock it.',
     correctCode: 'ROSE',
+  },
+  {
+    slug: 'pick-the-lock',
+    name: 'Pick the Lock',
+    description: 'A classic lock-picking challenge. Test your timing and precision to crack the code.',
+    puzzleDescription: 'An embedded Scratch game where the user has to pick a lock.',
   },
 ];
 
