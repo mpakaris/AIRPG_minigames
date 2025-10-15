@@ -1,7 +1,6 @@
 import { useState } from 'react';
-import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
 import { CheckCircle2, Clipboard, ClipboardCheck } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
@@ -23,9 +22,12 @@ export default function ClueReveal({ isLoading, clue, pin, specialPhrase }: Clue
       setIsCopied(true);
       toast({
         title: 'Copied to clipboard!',
-        description: 'You can now paste the phrase into the game chat.',
+        description: 'You can now paste the phrase into the game chat. This tab will close in 3 seconds.',
       });
-      setTimeout(() => setIsCopied(false), 2000);
+      setTimeout(() => {
+        setIsCopied(false);
+        window.close();
+      }, 3000);
     }
   };
   
@@ -37,7 +39,7 @@ export default function ClueReveal({ isLoading, clue, pin, specialPhrase }: Clue
         </div>
         <CardTitle className="font-headline text-2xl">Puzzle Solved!</CardTitle>
       </CardHeader>
-      <CardContent className="space-y-6">
+      <CardContent className="space-y-6 pt-6">
         <div>
           <h3 className="text-sm font-semibold uppercase text-muted-foreground tracking-wider">AI Generated Clue</h3>
           <div className="mt-2 p-4 min-h-[80px] bg-muted/50 rounded-lg flex items-center justify-center">
@@ -65,6 +67,7 @@ export default function ClueReveal({ isLoading, clue, pin, specialPhrase }: Clue
                 onClick={handleCopy}
                 className="absolute right-2 top-1/2 -translate-y-1/2 h-8 w-8 text-primary-foreground hover:bg-primary/80 hover:text-primary-foreground"
                 aria-label="Copy phrase to clipboard"
+                disabled={isCopied}
               >
                 {isCopied ? <ClipboardCheck className="h-5 w-5" /> : <Clipboard className="h-5 w-5" />}
               </Button>
@@ -84,11 +87,6 @@ export default function ClueReveal({ isLoading, clue, pin, specialPhrase }: Clue
         )}
 
       </CardContent>
-      <CardFooter>
-        <Button asChild className="w-full">
-          <Link href="/">Back to Home</Link>
-        </Button>
-      </CardFooter>
     </Card>
   );
 }
