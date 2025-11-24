@@ -37,7 +37,7 @@ export const games: Game[] = [
     name: 'The Metal Box',
     description: 'A rusty metal box holds the next clue, but it is locked by a 4-character pincode. Enter the right Word to receive the Passphrase.',
     puzzleDescription: 'A digital metal box locked by a 4-character word. The player must enter the code using a multi-press keypad to unlock it.',
-    correctCode: 'ROSE',
+    correctCode: 'SAXO',
   },
   {
     slug: 'pick-the-lock',
