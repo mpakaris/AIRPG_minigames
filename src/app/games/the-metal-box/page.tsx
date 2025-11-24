@@ -104,7 +104,7 @@ export default function GamePage() {
         ) : (
           <ClueReveal
             isLoading={false}
-            clue={"You entered the correct Password. To open the Book, copy the sentence below and paste it into the Game-Chat"}
+            clue={null}
             specialPhrase={specialPhrase}
           />
         )}

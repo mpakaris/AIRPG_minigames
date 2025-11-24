@@ -43,7 +43,7 @@ export default function Home() {
                 <div className="flex flex-col gap-2 min-[400px]:flex-row">
                   {games.map((game) => (
                     <Button asChild size="lg" className="shadow-lg shadow-primary/20" key={game.slug}>
-                      <Link href={game.slug === 'the-metal-box' ? '/games/the-notebook' : `/games/${game.slug}`}>
+                      <Link href={`/games/${game.slug}`}>
                         {game.name}
                         <ArrowRight className="ml-2 h-5 w-5" />
                       </Link>
