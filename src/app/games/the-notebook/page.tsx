@@ -1,32 +1,26 @@
 'use client';
 
-import { useState, useEffect, useMemo, useTransition } from 'react';
+import { useState, useMemo } from 'react';
 import Link from 'next/link';
-import { ArrowLeft, Terminal, Lock } from 'lucide-react';
+import { ArrowLeft, Terminal } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 import { getGameData } from '@/lib/games';
 import { GameLayout } from '@/components/game/game-layout';
 import ClueReveal from '@/components/game/clue-reveal';
-import { generateContextualClue } from '@/ai/flows/generate-contextual-clues';
 import { Button } from '@/components/ui/button';
-import { useToast } from '@/hooks/use-toast';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import T9Keypad from '@/components/game/t9-keypad';
 import PinDisplay from '@/components/game/pin-display';
 
 export default function GamePage() {
-  const [isPending, startTransition] = useTransition();
-  const { toast } = useToast();
   const gameData = useMemo(() => getGameData('the-metal-box'), []);
 
   const [inputCode, setInputCode] = useState('');
   const [isSolved, setIsSolved] = useState(false);
   const [isIncorrect, setIsIncorrect] = useState(false);
-  const [aiClue, setAiClue] = useState<string | null>(null);
-  const [isLoadingClue, setIsLoadingClue] = useState(false);
   
-  const specialPhrase = 'Password for brown notebook "Justice for Silas Bloom"';
+  const specialPhrase = '/password Justice for SIlas Bloom';
 
   const handleEnter = () => {
     if (!gameData || isSolved || isIncorrect) return;
@@ -34,28 +28,6 @@ export default function GamePage() {
     if (inputCode.toUpperCase() === gameData.correctCode) {
       setIsSolved(true);
       setIsIncorrect(false);
-      setIsLoadingClue(true);
-      startTransition(async () => {
-        try {
-          const result = await generateContextualClue({
-            gameState: `Player has successfully entered the password: ${gameData.correctCode}.`,
-            puzzleDescription: gameData.puzzleDescription,
-          });
-          
-          setAiClue(result.clue);
-
-        } catch (error) {
-          console.error('AI clue generation failed:', error);
-          setAiClue('The machine whirs, but stays silent.');
-          toast({
-            title: 'AI Error',
-            description: 'Failed to generate contextual clue.',
-            variant: 'destructive',
-          });
-        } finally {
-          setIsLoadingClue(false);
-        }
-      });
     } else {
       setIsIncorrect(true);
       setTimeout(() => {
@@ -131,8 +103,8 @@ export default function GamePage() {
           </>
         ) : (
           <ClueReveal
-            isLoading={isLoadingClue || isPending}
-            clue={aiClue}
+            isLoading={false}
+            clue={"You entered the correct Password. To open the Book, copy the sentence below and paste it into the Game-Chat"}
             specialPhrase={specialPhrase}
           />
         )}

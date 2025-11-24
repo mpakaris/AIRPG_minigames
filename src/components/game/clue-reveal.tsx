@@ -26,7 +26,11 @@ export default function ClueReveal({ isLoading, clue, pin, specialPhrase }: Clue
       });
       setTimeout(() => {
         setIsCopied(false);
-        window.close();
+        if (window.self !== window.top) {
+           // We are in an iframe, can't close
+        } else {
+           window.close();
+        }
       }, 3000);
     }
   };
@@ -40,19 +44,21 @@ export default function ClueReveal({ isLoading, clue, pin, specialPhrase }: Clue
         <CardTitle className="font-headline text-2xl">Puzzle Solved!</CardTitle>
       </CardHeader>
       <CardContent className="space-y-6 pt-6">
-        <div>
-          <h3 className="text-sm font-semibold uppercase text-muted-foreground tracking-wider">AI Generated Clue</h3>
-          <div className="mt-2 p-4 min-h-[80px] bg-muted/50 rounded-lg flex items-center justify-center">
-            {isLoading ? (
-              <div className="space-y-2 w-full">
-                <Skeleton className="h-4 w-full rounded-full" />
-                <Skeleton className="h-4 w-[80%] rounded-full" />
-              </div>
-            ) : (
-              <p className="text-foreground italic text-center">"{clue}"</p>
-            )}
+        {clue && (
+           <div>
+            <h3 className="text-sm font-semibold uppercase text-muted-foreground tracking-wider">Next Step</h3>
+            <div className="mt-2 p-4 min-h-[80px] bg-muted/50 rounded-lg flex items-center justify-center">
+              {isLoading ? (
+                <div className="space-y-2 w-full">
+                  <Skeleton className="h-4 w-full rounded-full" />
+                  <Skeleton className="h-4 w-[80%] rounded-full" />
+                </div>
+              ) : (
+                <p className="text-foreground italic text-center">"{clue}"</p>
+              )}
+            </div>
           </div>
-        </div>
+        )}
         
         {specialPhrase ? (
           <div>
