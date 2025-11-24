@@ -96,8 +96,6 @@ export default function GamePage() {
             <h1 className="font-headline text-3xl font-bold text-primary">{gameData.name}</h1>
             <p className="text-foreground/80 mt-2 mb-4">{gameData.description}</p>
             
-            <Lock className="w-24 h-24 mb-6 text-primary/70" />
-
             <div className="mt-4">
                <PinDisplay
                 code={inputCode}
