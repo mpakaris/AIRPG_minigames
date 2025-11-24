@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useMemo, useTransition } from 'react';
 import Link from 'next/link';
-import { ArrowLeft, Terminal } from 'lucide-react';
+import { ArrowLeft, Terminal, Lock } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 import { getGameData } from '@/lib/games';
@@ -11,14 +11,14 @@ import ClueReveal from '@/components/game/clue-reveal';
 import { generateContextualClue } from '@/ai/flows/generate-contextual-clues';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
-import PasswordInput from '@/components/game/password-input';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { NotebookIcon } from '@/components/icons/notebook';
+import T9Keypad from '@/components/game/t9-keypad';
+import PinDisplay from '@/components/game/pin-display';
 
 export default function GamePage() {
   const [isPending, startTransition] = useTransition();
   const { toast } = useToast();
-  const gameData = useMemo(() => getGameData('the-notebook'), []);
+  const gameData = useMemo(() => getGameData('the-metal-box'), []);
 
   const [inputCode, setInputCode] = useState('');
   const [isSolved, setIsSolved] = useState(false);
@@ -28,8 +28,8 @@ export default function GamePage() {
   
   const specialPhrase = 'Password for brown notebook "Justice for Silas Bloom"';
 
-  useEffect(() => {
-    if (!gameData || isSolved) return;
+  const handleEnter = () => {
+    if (!gameData || isSolved || isIncorrect) return;
 
     if (inputCode.toUpperCase() === gameData.correctCode) {
       setIsSolved(true);
@@ -56,24 +56,24 @@ export default function GamePage() {
           setIsLoadingClue(false);
         }
       });
-    } else if (inputCode.length === gameData.correctCode.length) {
+    } else {
       setIsIncorrect(true);
       setTimeout(() => {
         setIsIncorrect(false);
         setInputCode('');
       }, 1500);
     }
-  }, [inputCode, gameData, toast, isSolved]);
+  };
 
-  const handleCodeChange = (code: string) => {
+  const handleInput = (value: string) => {
     if (!isSolved && !isIncorrect) {
-      setInputCode(code);
+      setInputCode(value);
     }
   };
   
-  const handleCodeComplete = (code: string) => {
+  const handleDelete = () => {
     if (!isSolved && !isIncorrect) {
-      setInputCode(code);
+      setInputCode(prev => prev.slice(0, -1));
     }
   };
 
@@ -83,12 +83,6 @@ export default function GamePage() {
         <div className="text-center">
           <h2 className="font-headline text-2xl font-semibold">Game not found</h2>
           <p className="text-muted-foreground">This puzzle does not exist. Please check the URL.</p>
-          <Button asChild variant="link" className="mt-4 text-primary">
-            <Link href="/">
-              <ArrowLeft className="mr-2 h-4 w-4" />
-              Back to Home
-            </Link>
-          </Button>
         </div>
       </GameLayout>
     );
@@ -102,16 +96,20 @@ export default function GamePage() {
             <h1 className="font-headline text-3xl font-bold text-primary">{gameData.name}</h1>
             <p className="text-foreground/80 mt-2 mb-4">{gameData.description}</p>
             
-            <NotebookIcon className="w-48 h-48 mb-6 text-primary" />
+            <Lock className="w-24 h-24 mb-6 text-primary/70" />
 
             <div className="mt-4">
-              <PasswordInput
+               <PinDisplay
+                code={inputCode}
                 codeLength={gameData.correctCode.length}
-                onCodeChange={handleCodeChange}
-                onCodeComplete={handleCodeComplete}
                 isIncorrect={isIncorrect}
-                isDisabled={isSolved || isIncorrect}
-                value={inputCode}
+              />
+              <T9Keypad
+                onInput={handleInput}
+                onDelete={handleDelete}
+                onEnter={handleEnter}
+                maxLength={gameData.correctCode.length}
+                currentValue={inputCode}
               />
             </div>
             <AnimatePresence>
@@ -126,7 +124,7 @@ export default function GamePage() {
                     <Terminal className="h-4 w-4" />
                     <AlertTitle>Access Denied</AlertTitle>
                     <AlertDescription>
-                      Sorry, wrong answer. The correct answer was handed to you in the game. Try again.
+                      The lock clicks, but remains shut. Incorrect word.
                     </AlertDescription>
                   </Alert>
                 </motion.div>

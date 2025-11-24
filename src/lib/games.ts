@@ -33,11 +33,11 @@ export const games: Game[] = [
     finalPin: '3121',
   },
   {
-    slug: 'the-notebook',
-    name: 'The Notebook',
-    description: 'A leather-bound notebook holds the next clue, but it is locked by a 4-character password.',
-    puzzleDescription: 'A digital notebook locked by a 4-character password. The player must enter the code to unlock it.',
-    correctCode: '1943',
+    slug: 'the-metal-box',
+    name: 'The Metal Box',
+    description: 'A rusty metal box holds the next clue, but it is locked by a 4-character pincode. Enter the right Word to receive the Passphrase.',
+    puzzleDescription: 'A digital metal box locked by a 4-character word. The player must enter the code using a multi-press keypad to unlock it.',
+    correctCode: 'ROSE',
   },
   {
     slug: 'pick-the-lock',
