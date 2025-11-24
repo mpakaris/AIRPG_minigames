@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Delete, Check } from 'lucide-react';
 
 const keyMap: { [key: string]: string } = {
+  '1': '1',
   '2': '2ABC',
   '3': '3DEF',
   '4': '4GHI',
@@ -83,10 +84,10 @@ export default function T9Keypad({ onInput, onDelete, onEnter, maxLength, curren
           variant="outline"
           className="relative aspect-square h-auto w-full text-2xl font-bold bg-muted/30 hover:bg-accent/20 border-foreground/30 text-foreground shadow-lg rounded-2xl flex flex-col justify-center items-center p-1"
           aria-label={`Key ${key}`}
-          disabled={!keyMap[key] && key !== '1'}
+          disabled={!keyMap[key]}
         >
           <span>{key}</span>
-          {keyMap[key] && <span className="text-xs font-normal tracking-widest">{keyMap[key].substring(1)}</span>}
+          {keyMap[key] && keyMap[key].length > 1 && <span className="text-xs font-normal tracking-widest">{keyMap[key].substring(1)}</span>}
         </Button>
       ))}
        <Button
